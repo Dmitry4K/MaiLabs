@@ -1,0 +1,898 @@
+
+dmitry@dmitry-VirtualBox:~$ ssh -p 6789 188110@172.16.80.213
+188110@172.16.80.213's password: 
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-33-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Может быть обновлён 21 пакет.
+0 обновлений касаются безопасности системы.
+
+New release '18.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+*** Требуется перезагрузка системы ***
+Last login: Mon Sep 17 13:31:18 2018 from 172.31.73.67
+188110@cameron:~$ ls 
+lastproto  lubs
+188110@cameron:~$ ls -l
+total 8
+-rw-rw-r-- 1 188110 188110  207 сен 17 13:38 lastproto
+drwxrwxr-x 2 188110 188110 4096 сен 17 13:27 lubs
+188110@cameron:~$ ls -F
+lastproto  lubs/
+188110@cameron:~$ ls -a
+.              .bash_logout  .config    lubs      .vipilitca.swp
+..             .bashrc       .emacs.d   .profile  .Xdefaults
+.bash_history  .cache        lastproto  .viminfo  .xscreensaver
+188110@cameron:~$ ls -laF
+total 84
+drwx------   6 188110 188110  4096 сен 17 14:02 ./
+drwxr-xr-x 939 root   root   20480 сен  3 16:57 ../
+-rw-------   1 188110 188110   954 сен 17 14:02 .bash_history
+-rwx------   1 188110 188110   220 сен  1  2015 .bash_logout*
+-rwx------   1 188110 188110  3771 сен  1  2015 .bashrc*
+drwx------   2 188110 188110  4096 сен 13 16:28 .cache/
+drwx------   3 188110 188110  4096 фев 15  2017 .config/
+drwx------   2 188110 188110  4096 сен 13 16:39 .emacs.d/
+-rw-rw-r--   1 188110 188110   207 сен 17 13:38 lastproto
+drwxrwxr-x   2 188110 188110  4096 сен 17 13:27 lubs/
+-rwx------   1 188110 188110   655 июн 24  2016 .profile*
+-rw-------   1 188110 188110  1612 сен 17 14:02 .viminfo
+-rw-------   1 188110 188110 12288 сен 17 14:02 .vipilitca.swp
+-rwx------   1 188110 188110  1600 янв  9  2016 .Xdefaults*
+-rwx------   1 188110 188110    14 янв  9  2016 .xscreensaver*
+188110@cameron:~$ ruptime
+AlexDebian  down    3+00:54
+Lubuntu     down    1+03:08
+axp4        down   55+04:13
+cameron       up   13+02:58,     0 users,  load 0.00, 0.00, 0.00
+client01    down    1+01:04
+client02    down    1+01:03
+client04    down    1+01:08
+client05    down    1+01:09
+client06    down    1+01:10
+client07    down    1+01:09
+client18    down    1+01:11
+client19    down    1+01:10
+client20    down    1+01:10
+client21    down    1+00:37
+client22    down    1+01:11
+daniil-UX310down    3+07:12
+efimenko-Insdown   11+02:06
+kip-HP-Pavildown    3+02:18
+leonidTs-Aspdown    3+06:28
+pavel-Virtuadown    3+02:54
+repeinik-RC5down    2+04:07
+sinchess-N75down    3+01:33
+188110@cameron:~$ rwho
+188110@cameron:~$ whoami
+188110
+188110@cameron:~$ tty
+/dev/pts/0
+188110@cameron:~$ hostname
+cameron
+188110@cameron:~$ uname -a
+Linux cameron 4.15.0-33-generic #36~16.04.1-Ubuntu SMP Wed Aug 15 17:21:05 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+188110@cameron:~$ finger 188110
+Login: 188110         			Name: �M-^\8�M-^^-108�M-^Q-18 �M-^Zо�M-^@о�M-^A�M-^Bелев �M-^Tми�M-^B�M-^@ий �M-^Rа�M-^Aил�M-^Lеви�M-^G
+Directory: /stud/188110             	Shell: /bin/bash
+On since Tue Sep 18 20:07 (MSK) on pts/0 from 172.31.73.67
+   5 seconds idle
+No mail.
+No Plan.
+188110@cameron:~$ pwd
+/stud/188110
+188110@cameron:~$ packet_write_wait: Connection to 172.16.80.213 port 6789: Broken pipe
+188110@cameron:~$ who
+avd      tty7         2018-09-17 08:07 (:0)
+avd      pts/2        2018-09-17 08:07 (:0.0)
+188110   pts/0        2018-09-18 20:07 (172.31.73.67)
+188110   pts/16       2018-09-18 20:13 (217.9.92.67)
+188110@cameron:~$ man
+What manual page do you want?
+---------------------------------------------------------------------
+
+
+2018-09-18 20:17                                                  Page 1
+
+
+Script started on Tue Sep 18 20:16:37 2018
+ameron: ~188110@cameron:~$ ls
+lastproto  lubs
+ameron: ~188110@cameron:~$ pwd
+/stud/188110
+ameron: ~188110@cameron:~$ man ls
+man: can't set the locale; make sure $LC_* and $LANG are correct
+S(1)                            User Commands                           LS(1)
+
+NAME
+       ls - list directory contents
+
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION
+       List  information  about  the FILEs (the current directory by default).
+       Sort entries alphabetically if none of -cftuvSUX nor --sort  is  speci-
+       fied.
+
+       Mandatory  arguments  to  long  options are mandatory for short options
+       too.
+
+       -a, --all
+              do not ignore entries starting with .
+
+       -A, --almost-all
+              do not list implied . and ..
+
+       --author
+ameron: ~188110@cameron:~$ man ls
+man: can't set the locale; make sure $LC_* and $LANG are correct
+S(1)                            User Commands                           LS(1)
+
+NAME
+       ls - list directory contents
+
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION
+       List  information  about  the FILEs (the current directory by default).
+       Sort entries alphabetically if none of -cftuvSUX nor --sort  is  speci-
+       fied.
+
+       Mandatory  arguments  to  long  options are mandatory for short options
+       too.
+
+       -a, --all
+              do not ignore entries starting with .
+
+       -A, --almost-all
+              do not list implied . and ..
+
+
+
+
+2018-09-18 20:17                                                  Page 2
+
+
+       --author
+ameron: ~188110@cameron:~$ ls 
+lastproto  lubs
+ameron: ~188110@cameron:~$ pws
+No command 'pws' found, did you mean:
+ Command 'pcs' from package 'pcs' (universe)
+ Command 'psw' from package 'wise' (universe)
+ Command 'ps' from package 'procps' (main)
+ Command 'pvs' from package 'lvm2' (main)
+ Command 'pts' from package 'openafs-client' (universe)
+ Command 'rpws' from package 'ratpoison' (universe)
+ Command 'aws' from package 'awscli' (universe)
+ Command 'pwd' from package 'coreutils' (main)
+ Command 'pms' from package 'pms' (universe)
+pws: command not found
+ameron: ~188110@cameron:~$ pwd
+/stud/188110
+ameron: ~188110@cameron:~$ exit
+exit
+
+Script done on Tue Sep 18 20:17:05 2018
+---------------------------------------------------------
+188110@cameron:~$ cd /
+188110@cameron:/$ ls
+aquota.user  diskless    initrd.img.old  mnt   sbin      sys       vmlinuz
+bin          etc         lib             opt   snap      tftpboot  vmlinuz.old
+boot         etc.tgz     lib64           proc  srv       tmp
+cdrom        home        lost+found      root  stud      usr
+dev          initrd.img  media           run   stud_old  var
+188110@cameron:/$ cd bin/
+188110@cameron:/bin$ ls
+bash           grep           ntfs-3g           su
+bunzip2        gunzip         ntfs-3g.probe     sync
+busybox        gzexe          ntfs-3g.secaudit  systemctl
+bzcat          gzip           ntfs-3g.usermap   systemd
+bzcmp          hciconfig      ntfscat           systemd-ask-password
+bzdiff         hostname       ntfscluster       systemd-escape
+bzegrep        ip             ntfscmp           systemd-hwdb
+bzexe          journalctl     ntfsfallocate     systemd-inhibit
+bzfgrep        kbd_mode       ntfsfix           systemd-machine-id-setup
+bzgrep         keyctl         ntfsinfo          systemd-notify
+bzip2          kill           ntfsls            systemd-tmpfiles
+bzip2recover   kmod           ntfsmove          systemd-tty-ask-password-agent
+bzless         less           ntfstruncate      tailf
+bzmore         lessecho       ntfswipe          tar
+cat            lessfile       open              tempfile
+chacl          lesskey        openvt            touch
+chgrp          lesspipe       pax               true
+chmod          ln             paxcpio           udevadm
+chown          loadkeys       paxtar            ulockmgr_server
+chvt           login          pidof             umount
+cp             loginctl       ping              uname
+cpio           lowntfs-3g     ping6             uncompress
+dash           ls             plymouth          unicode_start
+date           lsblk          ps                vdir
+dd             lsmod          pwd               VTM_diagram
+df             markov         rbash             wdctl
+dir            mkdir          readlink          which
+dmesg          mknod          red               whiptail
+dnsdomainname  mktemp         rm                ypdomainname
+domainname     more           rmdir             zcat
+dumpkeys       mount          rnano             zcmp
+echo           mountpoint     run-parts         zdiff
+ed             mt             sed               zegrep
+efibootmgr     mt-gnu         setfacl           zfgrep
+egrep          mv             setfont           zforce
+false          nano           setupcon          zgrep
+fgconsole      nc             sh                zless
+fgrep          nc.openbsd     sh.distrib        zmore
+findmnt        netcat         sleep             znew
+fuser          netstat        ss
+fusermount     networkctl     static-sh
+getfacl        nisdomainname  stty
+188110@cameron:/bin$ ls -laF
+total 14676
+drwxr-xr-x  2 root root    4096 авг 20 12:50 ./
+drwxr-xr-x 28 root root    4096 сен 11 06:01 ../
+-rwxr-xr-x  1 root root 1037528 май 16  2017 bash*
+-rwxr-xr-x  1 root root   31288 май 20  2015 bunzip2*
+-rwxr-xr-x  1 root root 1964536 авг 19  2015 busybox*
+-rwxr-xr-x  1 root root   31288 май 20  2015 bzcat*
+lrwxrwxrwx  1 root root       6 июл 28  2017 bzcmp -> bzdiff*
+-rwxr-xr-x  1 root root    2140 май 20  2015 bzdiff*
+lrwxrwxrwx  1 root root       6 июл 28  2017 bzegrep -> bzgrep*
+-rwxr-xr-x  1 root root    4877 май 20  2015 bzexe*
+lrwxrwxrwx  1 root root       6 июл 28  2017 bzfgrep -> bzgrep*
+-rwxr-xr-x  1 root root    3642 май 20  2015 bzgrep*
+-rwxr-xr-x  1 root root   31288 май 20  2015 bzip2*
+-rwxr-xr-x  1 root root   14616 май 20  2015 bzip2recover*
+lrwxrwxrwx  1 root root       6 июл 28  2017 bzless -> bzmore*
+-rwxr-xr-x  1 root root    1297 май 20  2015 bzmore*
+-rwxr-xr-x  1 root root   52080 мар  2  2017 cat*
+-rwxr-xr-x  1 root root   14752 фев  7  2016 chacl*
+-rwxr-xr-x  1 root root   60272 мар  2  2017 chgrp*
+-rwxr-xr-x  1 root root   56112 мар  2  2017 chmod*
+-rwxr-xr-x  1 root root   64368 мар  2  2017 chown*
+-rwxr-xr-x  1 root root   10536 сен 22  2016 chvt*
+-rwxr-xr-x  1 root root  151024 мар  2  2017 cp*
+-rwxr-xr-x  1 root root  141472 фев 18  2016 cpio*
+-rwxr-xr-x  1 root root  154072 фев 17  2016 dash*
+-rwxr-xr-x  1 root root   68464 мар  2  2017 date*
+-rwxr-xr-x  1 root root   72632 мар  2  2017 dd*
+-rwxr-xr-x  1 root root   97912 мар  2  2017 df*
+-rwxr-xr-x  1 root root  126584 мар  2  2017 dir*
+-rwxr-xr-x  1 root root   60680 май 16 18:00 dmesg*
+lrwxrwxrwx  1 root root       8 июл 28  2017 dnsdomainname -> hostname*
+lrwxrwxrwx  1 root root       8 июл 28  2017 domainname -> hostname*
+-rwxr-xr-x  1 root root   82328 сен 22  2016 dumpkeys*
+-rwxr-xr-x  1 root root   31376 мар  2  2017 echo*
+-rwxr-xr-x  1 root root   51512 апр 26  2014 ed*
+-rwxr-xr-x  1 root root   36504 июл 14  2015 efibootmgr*
+-rwxr-xr-x  1 root root      28 апр 29  2016 egrep*
+-rwxr-xr-x  1 root root   27280 мар  2  2017 false*
+-rwxr-xr-x  1 root root   10544 сен 22  2016 fgconsole*
+-rwxr-xr-x  1 root root      28 апр 29  2016 fgrep*
+-rwxr-xr-x  1 root root   49576 май 16 18:00 findmnt*
+-rwxr-xr-x  1 root root   36024 фев  7  2016 fuser*
+-rwsr-xr-x  1 root root   30800 июл 12  2016 fusermount*
+-rwxr-xr-x  1 root root   23752 фев  7  2016 getfacl*
+-rwxr-xr-x  1 root root  211224 апр 29  2016 grep*
+-rwxr-xr-x  1 root root    2301 окт 27  2014 gunzip*
+-rwxr-xr-x  1 root root    5927 окт 27  2014 gzexe*
+-rwxr-xr-x  1 root root   98240 окт 27  2014 gzip*
+-rwxr-xr-x  1 root root  192760 сен 12  2017 hciconfig*
+-rwxr-xr-x  1 root root   14800 ноя 24  2015 hostname*
+-rwxr-xr-x  1 root root  376192 дек  7  2017 ip*
+-rwxr-xr-x  1 root root  498936 мар  8  2018 journalctl*
+-rwxr-xr-x  1 root root   10536 сен 22  2016 kbd_mode*
+-rwxr-xr-x  1 root root   30792 дек 10  2015 keyctl*
+-rwxr-xr-x  1 root root   23152 май 14 15:42 kill*
+-rwxr-xr-x  1 root root  150600 июл 25  2017 kmod*
+-rwxr-xr-x  1 root root  170728 апр  5  2017 less*
+-rwxr-xr-x  1 root root   10256 апр  5  2017 lessecho*
+lrwxrwxrwx  1 root root       8 апр  5  2017 lessfile -> lesspipe*
+-rwxr-xr-x  1 root root   19824 апр  5  2017 lesskey*
+-rwxr-xr-x  1 root root    7764 апр  5  2017 lesspipe*
+-rwxr-xr-x  1 root root   56152 мар  2  2017 ln*
+-rwxr-xr-x  1 root root  111496 сен 22  2016 loadkeys*
+-rwxr-xr-x  1 root root   48128 май 17  2017 login*
+-rwxr-xr-x  1 root root  453848 мар  8  2018 loginctl*
+-rwxr-xr-x  1 root root  105136 янв 28  2017 lowntfs-3g*
+-rwxr-xr-x  1 root root  126584 мар  2  2017 ls*
+-rwxr-xr-x  1 root root   77280 май 16 18:00 lsblk*
+lrwxrwxrwx  1 root root       4 июл 25  2017 lsmod -> kmod*
+-rwxr-xr-x  1 root root    1073 авг 31  2017 markov*
+-rwxr-xr-x  1 root root   76848 мар  2  2017 mkdir*
+-rwxr-xr-x  1 root root   64496 мар  2  2017 mknod*
+-rwxr-xr-x  1 root root   39728 мар  2  2017 mktemp*
+-rwxr-xr-x  1 root root   39768 май 16 18:00 more*
+-rwsr-xr-x  1 root root   40152 май 16 18:00 mount*
+-rwxr-xr-x  1 root root   14768 май 16 18:00 mountpoint*
+lrwxrwxrwx  1 root root      20 июл 28  2017 mt -> /etc/alternatives/mt*
+-rwxr-xr-x  1 root root   68824 фев 18  2016 mt-gnu*
+-rwxr-xr-x  1 root root  130488 мар  2  2017 mv*
+-rwxr-xr-x  1 root root  208480 фев 15  2017 nano*
+lrwxrwxrwx  1 root root      20 июл 28  2017 nc -> /etc/alternatives/nc*
+-rwxr-xr-x  1 root root   31248 дек  4  2012 nc.openbsd*
+lrwxrwxrwx  1 root root      24 июл 28  2017 netcat -> /etc/alternatives/netcat*
+-rwxr-xr-x  1 root root  119624 июн 30  2014 netstat*
+-rwxr-xr-x  1 root root  678496 мар  8  2018 networkctl*
+lrwxrwxrwx  1 root root       8 июл 28  2017 nisdomainname -> hostname*
+-rwsr-xr-x  1 root root  142032 янв 28  2017 ntfs-3g*
+-rwxr-xr-x  1 root root   10312 янв 28  2017 ntfs-3g.probe*
+-rwxr-xr-x  1 root root   67608 янв 28  2017 ntfs-3g.secaudit*
+-rwxr-xr-x  1 root root   18424 янв 28  2017 ntfs-3g.usermap*
+-rwxr-xr-x  1 root root   26728 янв 28  2017 ntfscat*
+-rwxr-xr-x  1 root root   30824 янв 28  2017 ntfscluster*
+-rwxr-xr-x  1 root root   34920 янв 28  2017 ntfscmp*
+-rwxr-xr-x  1 root root   34928 янв 28  2017 ntfsfallocate*
+-rwxr-xr-x  1 root root   39024 янв 28  2017 ntfsfix*
+-rwxr-xr-x  1 root root   55416 янв 28  2017 ntfsinfo*
+-rwxr-xr-x  1 root root   31928 янв 28  2017 ntfsls*
+-rwxr-xr-x  1 root root   30824 янв 28  2017 ntfsmove*
+-rwxr-xr-x  1 root root   38944 янв 28  2017 ntfstruncate*
+-rwxr-xr-x  1 root root   47752 янв 28  2017 ntfswipe*
+lrwxrwxrwx  1 root root       6 июл 28  2017 open -> openvt*
+-rwxr-xr-x  1 root root   18968 сен 22  2016 openvt*
+-rwxr-xr-x  1 root root  122216 окт 24  2015 pax*
+lrwxrwxrwx  1 root root       3 окт 24  2015 paxcpio -> pax*
+lrwxrwxrwx  1 root root       3 окт 24  2015 paxtar -> pax*
+lrwxrwxrwx  1 root root      14 июл 28  2017 pidof -> /sbin/killall5*
+-rwsr-xr-x  1 root root   44168 май  7  2014 ping*
+-rwsr-xr-x  1 root root   44680 май  7  2014 ping6*
+-rwxr-xr-x  1 root root   39608 май  9 14:59 plymouth*
+-rwxr-xr-x  1 root root   97408 май 14 15:42 ps*
+-rwxr-xr-x  1 root root   31472 мар  2  2017 pwd*
+lrwxrwxrwx  1 root root       4 май 16  2017 rbash -> bash*
+-rwxr-xr-x  1 root root   39632 мар  2  2017 readlink*
+-rwxr-xr-x  1 root root      89 апр 26  2014 red*
+-rwxr-xr-x  1 root root   60272 мар  2  2017 rm*
+-rwxr-xr-x  1 root root   39632 мар  2  2017 rmdir*
+lrwxrwxrwx  1 root root       4 фев 15  2017 rnano -> nano*
+-rwxr-xr-x  1 root root   19320 янв 26  2016 run-parts*
+-rwxr-xr-x  1 root root   73424 фев 12  2016 sed*
+-rwxr-xr-x  1 root root   36296 фев  7  2016 setfacl*
+-rwxr-xr-x  1 root root   39952 сен 22  2016 setfont*
+-rwxr-xr-x  1 root root   30875 окт 12  2017 setupcon*
+lrwxrwxrwx  1 root root       4 июл 28  2017 sh -> dash*
+lrwxrwxrwx  1 root root       4 июл 28  2017 sh.distrib -> dash*
+-rwxr-xr-x  1 root root   31408 мар  2  2017 sleep*
+-rwxr-xr-x  1 root root  115816 дек  7  2017 ss*
+lrwxrwxrwx  1 root root       7 июл 28  2017 static-sh -> busybox*
+-rwxr-xr-x  1 root root   72496 мар  2  2017 stty*
+-rwsr-xr-x  1 root root   40128 май 17  2017 su*
+-rwxr-xr-x  1 root root   31408 мар  2  2017 sync*
+-rwxr-xr-x  1 root root  659848 мар  8  2018 systemctl*
+lrwxrwxrwx  1 root root      20 мар  8  2018 systemd -> /lib/systemd/systemd*
+-rwxr-xr-x  1 root root   51656 мар  8  2018 systemd-ask-password*
+-rwxr-xr-x  1 root root   39344 мар  8  2018 systemd-escape*
+-rwxr-xr-x  1 root root   64080 мар  8  2018 systemd-hwdb*
+-rwxr-xr-x  1 root root  281840 мар  8  2018 systemd-inhibit*
+-rwxr-xr-x  1 root root   47544 мар  8  2018 systemd-machine-id-setup*
+-rwxr-xr-x  1 root root   35248 мар  8  2018 systemd-notify*
+-rwxr-xr-x  1 root root  133704 мар  8  2018 systemd-tmpfiles*
+-rwxr-xr-x  1 root root   68032 мар  8  2018 systemd-tty-ask-password-agent*
+-rwxr-xr-x  1 root root   23144 май 16 18:00 tailf*
+-rwxr-xr-x  1 root root  383632 ноя 17  2016 tar*
+-rwxr-xr-x  1 root root   10416 янв 26  2016 tempfile*
+-rwxr-xr-x  1 root root   64432 мар  2  2017 touch*
+-rwxr-xr-x  1 root root   27280 мар  2  2017 true*
+-rwxr-xr-x  1 root root  449136 мар  8  2018 udevadm*
+-rwxr-xr-x  1 root root   14328 июл 12  2016 ulockmgr_server*
+-rwsr-xr-x  1 root root   27608 май 16 18:00 umount*
+-rwxr-xr-x  1 root root   31440 мар  2  2017 uname*
+-rwxr-xr-x  1 root root    2301 окт 27  2014 uncompress*
+-rwxr-xr-x  1 root root    2762 сен 22  2016 unicode_start*
+-rwxr-xr-x  1 root root  126584 мар  2  2017 vdir*
+-rwxr-xr-x  1 root root 1569048 авг 31  2017 VTM_diagram*
+-rwxr-xr-x  1 root root   31376 май 16 18:00 wdctl*
+-rwxr-xr-x  1 root root     946 янв 26  2016 which*
+-rwxr-xr-x  1 root root   27432 янв 18  2016 whiptail*
+lrwxrwxrwx  1 root root       8 июл 28  2017 ypdomainname -> hostname*
+-rwxr-xr-x  1 root root    1937 окт 27  2014 zcat*
+-rwxr-xr-x  1 root root    1777 окт 27  2014 zcmp*
+-rwxr-xr-x  1 root root    5764 окт 27  2014 zdiff*
+-rwxr-xr-x  1 root root     140 окт 27  2014 zegrep*
+-rwxr-xr-x  1 root root     140 окт 27  2014 zfgrep*
+-rwxr-xr-x  1 root root    2131 окт 27  2014 zforce*
+-rwxr-xr-x  1 root root    5938 окт 27  2014 zgrep*
+-rwxr-xr-x  1 root root    2037 окт 27  2014 zless*
+-rwxr-xr-x  1 root root    1910 окт 27  2014 zmore*
+-rwxr-xr-x  1 root root    5047 окт 27  2014 znew*
+188110@cameron:/bin$ cd..
+cd..: command not found        <-------------------------дневник отладки
+188110@cameron:/bin$ cd ..
+188110@cameron:/$ ls
+aquota.user  diskless    initrd.img.old  mnt   sbin      sys       vmlinuz
+bin          etc         lib             opt   snap      tftpboot  vmlinuz.old
+boot         etc.tgz     lib64           proc  srv       tmp
+cdrom        home        lost+found      root  stud      usr
+dev          initrd.img  media           run   stud_old  var
+188110@cameron:/$ cd stud/188110
+188110@cameron:~$ cat file1.txt
+cat: file1.txt: No such file or directory
+188110@cameron:~$ cat> file1.txt
+1 
+1
+1
+188110@cameron:~$ cp file1.txt file2.txt
+188110@cameron:~$ ls
+file1.txt  file2.txt  lastproto  lubs
+188110@cameron:~$ cat file2.txt
+1 
+1
+1
+188110@cameron:~$ mv --help
+---------------------------------------------
+Usage: mv [OPTION]... [-T] SOURCE DEST
+  or:  mv [OPTION]... SOURCE... DIRECTORY
+  or:  mv [OPTION]... -t DIRECTORY SOURCE...
+Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.
+Mandatory arguments to long options are mandatory for short options too.
+      --backup[=CONTROL]       make a backup of each existing destination file
+  -b                           like --backup but does not accept an argument
+  -f, --force                  do not prompt before overwriting
+  -i, --interactive            prompt before overwrite
+  -n, --no-clobber             do not overwrite an existing file
+If you specify more than one of -i, -f, -n, only the final one takes effect.
+      --strip-trailing-slashes  remove any trailing slashes from each SOURCE
+                                 argument
+  -S, --suffix=SUFFIX          override the usual backup suffix
+  -t, --target-directory=DIRECTORY  move all SOURCE arguments into DIRECTORY
+  -T, --no-target-directory    treat DEST as a normal file
+  -u, --update                 move only when the SOURCE file is newer
+                                 than the destination file or when the
+                                 destination file is missing
+  -v, --verbose                explain what is being done
+  -Z, --context                set SELinux security context of destination
+                                 file to default type
+      --help     display this help and exit
+      --version  output version information and exit
+
+The backup suffix is '~', unless set with --suffix or SIMPLE_BACKUP_SUFFIX.
+The version control method may be selected via the --backup option or through
+the VERSION_CONTROL environment variable.  Here are the values:
+
+  none, off       never make backups (even if --backup is given)
+  numbered, t     make numbered backups
+  existing, nil   numbered if numbered backups exist, simple otherwise
+  simple, never   always make simple backups
+
+GNU coreutils online help: <http://www.gnu.org/software/coreutils/>
+Report mv translation bugs to <http://translationproject.org/team/>
+Full documentation at: <http://www.gnu.org/software/coreutils/mv>
+or available locally via: info '(coreutils) mv invocation'
+-------------------------------------------------------------------------------------------------
+188110@cameron:~$ cat file1.txt file2.txt > file3.txt
+188110@cameron:~$ ls
+file1.txt  file2.txt  file3.txt  lastproto  lubs
+188110@cameron:~$ cat file3.txt
+1 
+1
+1
+188110@cameron:~$ cat file1   <----------------------- дневник отладки
+cat: file1: No such file or directory
+188110@cameron:~$ cat file1.txt
+1 
+1
+1
+188110@cameron:~$ ls
+file1.txt  file2.txt  file3.txt  lastproto  lubs
+188110@cameron:~$ cat file2.txt
+1 
+1
+1
+188110@cameron:~$ cat file1.txt file2.txt > file3.txt
+188110@cameron:~$ ls
+file1.txt  file2.txt  file3.txt  lastproto  lubs
+188110@cameron:~$ cat file3.txt
+1 
+1
+1
+1 
+1
+1
+188110@cameron:~$ rm file2.txt file3.txt
+188110@cameron:~$ ls
+file1.txt  lastproto  lubs
+188110@cameron:~$ rm -R lubs
+188110@cameron:~$ ls
+file1.txt  lastproto
+188110@cameron:~$ mkdir lubs 
+188110@cameron:~$ ls
+file1.txt  lastproto  lubs
+188110@cameron:~$ mkdir course
+188110@cameron:~$ ls
+course  file1.txt  lastproto  lubs
+188110@cameron:~$ mkdir mistake
+188110@cameron:~$ ls
+course  file1.txt  lastproto  lubs  mistake
+188110@cameron:~$ rm -R mistake
+188110@cameron:~$ ls
+course  file1.txt  lastproto  lubs
+188110@cameron:~$ touch file1.txt
+188110@cameron:~$ info
+188110@cameron:~$ screenfetch
+                          ./+o+-       188110@cameron
+                  yyyyy- -yyyyyy+      OS: Ubuntu 16.04 xenial
+               ://+//////-yyyyyyo      Kernel: x86_64 Linux 4.15.0-33-generic
+           .++ .:/++++++/-.+sss/`      Uptime: 13d 3h 21m
+         .:++o:  /++++++++/:--:/-      Packages: 2118
+        o:+o+:++.`..```.-/oo+++++/     Shell: bash 4.3.48
+       .:+o:+o/.          `+sssoo+/    CPU: Intel Core2 Duo CPU E8500 @ 3.163GHz
+  .++/+:+oo+o:`             /sssooo.   RAM: 2552MiB / 16029MiB
+ /+++//+:`oo+o               /::--:.  
+ \+/+o+++`o++o               ++////.  
+  .++.o+++oo+:`             /dddhhh.  
+       .+.o+oo:.          `oddhhhh+   
+        \+.++o+o``-````.:ohdhhhhh+    
+         `:o+++ `ohhhhhhhhyo++os:     
+           .o:`.syhhhhhhh/.oo++o`     
+               /osyyyyyyo++ooo+++/    
+                   ````` +oo+++o\:    
+                          `oo++.      
+188110@cameron:~$ df
+Filesystem      1K-blocks     Used  Available Use% Mounted on
+udev              8177180        0    8177180   0% /dev
+tmpfs             1641472    68056    1573416   5% /run
+/dev/sdb1        59357124 56120836     198080 100% /
+tmpfs             8207344    15976    8191368   1% /dev/shm
+tmpfs                5120        4       5116   1% /run/lock
+tmpfs             8207344        0    8207344   0% /sys/fs/cgroup
+/dev/md126p1   1442012220 17409524 1351329608   2% /stud
+tmpfs             1641472       16    1641456   1% /run/user/1000
+tmpfs             1641472       44    1641428   1% /run/user/1003
+tmpfs             1641472       44    1641428   1% /run/user/1014
+tmpfs             1641472       36    1641436   1% /run/user/1005
+tmpfs             1641472        0    1641472   0% /run/user/188032
+tmpfs             1641472       52    1641420   1% /run/user/1002
+tmpfs             1641472        0    1641472   0% /run/user/188051
+tmpfs             1641472       12    1641460   1% /run/user/108
+tmpfs             1641472        0    1641472   0% /run/user/188110
+188110@cameron:~$ lswh
+No command 'lswh' found, did you mean:
+ Command 'lswm' from package 'lswm' (universe)
+ Command 'lsh' from package 'lsh-client' (universe)
+ Command 'lshw' from package 'lshw' (main)
+ Command 'lsw' from package 'suckless-tools' (universe)
+lswh: command not found
+188110@cameron:~$ ;shw
+-bash: syntax error near unexpected token `;'
+188110@cameron:~$ lshw
+WARNING: you should run this program as super-user.
+cameron                   
+    description: Computer
+    width: 64 bits
+    capabilities: vsyscall32
+  *-core
+       description: Motherboard
+       physical id: 0
+     *-memory
+          description: System memory
+          physical id: 0
+          size: 15GiB
+     *-cpu
+          product: Intel(R) Core(TM)2 Duo CPU     E8500  @ 3.16GHz
+          vendor: Intel Corp.
+          physical id: 1
+          bus info: cpu@0
+          size: 3058MHz
+          capacity: 3163MHz
+          width: 64 bits
+          capabilities: fpu fpu_exception wp vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx x86-64 constant_tsc arch_perfmon pebs bts rep_good nopl cpuid aperfmperf pni dtes64 monitor ds_cpl vmx smx est tm2 ssse3 cx16 xtpr pdcm sse4_1 xsave lahf_lm pti tpr_shadow vnmi flexpriority dtherm cpufreq
+     *-pci
+          description: Host bridge
+          product: 4 Series Chipset DRAM Controller
+          vendor: Intel Corporation
+          physical id: 100
+          bus info: pci@0000:00:00.0
+          version: 03
+          width: 32 bits
+          clock: 33MHz
+        *-pci:0
+             description: PCI bridge
+             product: 4 Series Chipset PCI Express Root Port
+             vendor: Intel Corporation
+             physical id: 1
+             bus info: pci@0000:00:01.0
+             version: 03
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:24 ioport:e000(size=4096) memory:e0000000-e80fffff
+           *-display:0
+                description: VGA compatible controller
+                product: RV370 [Radeon X300/X550/X1050 Series]
+                vendor: Advanced Micro Devices, Inc. [AMD/ATI]
+                physical id: 0
+                bus info: pci@0000:01:00.0
+                version: 00
+                width: 32 bits
+                clock: 33MHz
+                capabilities: vga_controller bus_master cap_list rom
+                configuration: driver=radeon latency=0
+                resources: irq:32 memory:e0000000-e7ffffff ioport:e000(size=256) memory:e8030000-e803ffff memory:c0000-dffff
+           *-display:1 UNCLAIMED
+                description: Display controller
+                product: RV370 [Radeon X300/X550/X1050 Series] (Secondary)
+                vendor: Advanced Micro Devices, Inc. [AMD/ATI]
+                physical id: 0.1
+                bus info: pci@0000:01:00.1
+                version: 00
+                width: 32 bits
+                clock: 33MHz
+                capabilities: bus_master cap_list
+                configuration: latency=0
+                resources: memory:e8020000-e802ffff
+        *-usb:0
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #4
+             vendor: Intel Corporation
+             physical id: 1a
+             bus info: pci@0000:00:1a.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:16 ioport:f0e0(size=32)
+        *-usb:1
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #5
+             vendor: Intel Corporation
+             physical id: 1a.1
+             bus info: pci@0000:00:1a.1
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:21 ioport:f0c0(size=32)
+        *-usb:2
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #6
+             vendor: Intel Corporation
+             physical id: 1a.2
+             bus info: pci@0000:00:1a.2
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:18 ioport:f0a0(size=32)
+        *-usb:3
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB2 EHCI Controller #2
+             vendor: Intel Corporation
+             physical id: 1a.7
+             bus info: pci@0000:00:1a.7
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: ehci bus_master cap_list
+             configuration: driver=ehci-pci latency=0
+             resources: irq:18 memory:e8407000-e84073ff
+        *-multimedia
+             description: Audio device
+             product: 82801JI (ICH10 Family) HD Audio Controller
+             vendor: Intel Corporation
+             physical id: 1b
+             bus info: pci@0000:00:1b.0
+             version: 00
+             width: 64 bits
+             clock: 33MHz
+             capabilities: bus_master cap_list
+             configuration: driver=snd_hda_intel latency=0
+             resources: irq:33 memory:e8400000-e8403fff
+        *-pci:1
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Root Port 1
+             vendor: Intel Corporation
+             physical id: 1c
+             bus info: pci@0000:00:1c.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:25 ioport:d000(size=4096) memory:e8300000-e83fffff ioport:e8500000(size=2097152)
+           *-ide
+                description: IDE interface
+                product: 88SE6101/6102 single-port PATA133 interface
+                vendor: Marvell Technology Group Ltd.
+                physical id: 0
+                bus info: pci@0000:02:00.0
+                version: b2
+                width: 32 bits
+                clock: 33MHz
+                capabilities: ide bus_master cap_list
+                configuration: driver=pata_marvell latency=0
+                resources: irq:16 ioport:d040(size=8) ioport:d030(size=4) ioport:d020(size=8) ioport:d010(size=4) ioport:d000(size=16) memory:e8300000-e83001ff
+        *-pci:2
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Port 2
+             vendor: Intel Corporation
+             physical id: 1c.1
+             bus info: pci@0000:00:1c.1
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:26 ioport:2000(size=4096) memory:e8700000-e88fffff ioport:e8900000(size=2097152)
+        *-pci:3
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Root Port 3
+             vendor: Intel Corporation
+             physical id: 1c.2
+             bus info: pci@0000:00:1c.2
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:27 ioport:3000(size=4096) memory:e8b00000-e8cfffff ioport:e8d00000(size=2097152)
+        *-pci:4
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Root Port 4
+             vendor: Intel Corporation
+             physical id: 1c.3
+             bus info: pci@0000:00:1c.3
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:28 ioport:4000(size=4096) memory:e8f00000-e90fffff ioport:e9100000(size=2097152)
+        *-pci:5
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Root Port 5
+             vendor: Intel Corporation
+             physical id: 1c.4
+             bus info: pci@0000:00:1c.4
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:29 ioport:c000(size=4096) memory:e8200000-e82fffff ioport:e9300000(size=2097152)
+           *-firewire
+                description: FireWire (IEEE 1394)
+                product: VT6315 Series Firewire Controller
+                vendor: VIA Technologies, Inc.
+                physical id: 0
+                bus info: pci@0000:06:00.0
+                version: 00
+                width: 64 bits
+                clock: 33MHz
+                capabilities: ohci bus_master cap_list
+                configuration: driver=firewire_ohci latency=0
+                resources: irq:16 memory:e8200000-e82007ff ioport:c000(size=256)
+        *-pci:6
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Root Port 6
+             vendor: Intel Corporation
+             physical id: 1c.5
+             bus info: pci@0000:00:1c.5
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:30 ioport:5000(size=4096) memory:e8100000-e81fffff ioport:e9500000(size=2097152)
+           *-network
+                description: Ethernet interface
+                product: NetLink BCM57788 Gigabit Ethernet PCIe
+                vendor: Broadcom Corporation
+                physical id: 0
+                bus info: pci@0000:07:00.0
+                logical name: eno1
+                version: 01
+                serial: 00:22:4d:48:8f:0b
+                size: 1Gbit/s
+                capacity: 1Gbit/s
+                width: 64 bits
+                clock: 33MHz
+                capabilities: bus_master cap_list ethernet physical tp mii 10bt 10bt-fd 100bt 100bt-fd 1000bt 1000bt-fd autonegotiation
+                configuration: autonegotiation=on broadcast=yes driver=tg3 driverversion=3.137 duplex=full firmware=sb ip=192.168.2.200 latency=0 link=yes multicast=yes port=MII speed=1Gbit/s
+                resources: irq:34 memory:e8100000-e810ffff
+        *-usb:4
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #1
+             vendor: Intel Corporation
+             physical id: 1d
+             bus info: pci@0000:00:1d.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:23 ioport:f080(size=32)
+        *-usb:5
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #2
+             vendor: Intel Corporation
+             physical id: 1d.1
+             bus info: pci@0000:00:1d.1
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:19 ioport:f060(size=32)
+        *-usb:6
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #3
+             vendor: Intel Corporation
+             physical id: 1d.2
+             bus info: pci@0000:00:1d.2
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:18 ioport:f040(size=32)
+        *-usb:7
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB2 EHCI Controller #1
+             vendor: Intel Corporation
+             physical id: 1d.7
+             bus info: pci@0000:00:1d.7
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: ehci bus_master cap_list
+             configuration: driver=ehci-pci latency=0
+             resources: irq:23 memory:e8406000-e84063ff
+        *-pci:7
+             description: PCI bridge
+             product: 82801 PCI Bridge
+             vendor: Intel Corporation
+             physical id: 1e
+             bus info: pci@0000:00:1e.0
+             version: 90
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci subtractive_decode bus_master cap_list
+        *-isa
+             description: ISA bridge
+             product: 82801JIR (ICH10R) LPC Interface Controller
+             vendor: Intel Corporation
+             physical id: 1f
+             bus info: pci@0000:00:1f.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: isa bus_master cap_list
+             configuration: driver=lpc_ich latency=0
+             resources: irq:0
+        *-storage
+             description: RAID bus controller
+             product: SATA Controller [RAID mode]
+             vendor: Intel Corporation
+             physical id: 1f.2
+             bus info: pci@0000:00:1f.2
+             version: 00
+             width: 32 bits
+             clock: 66MHz
+             capabilities: storage bus_master cap_list
+             configuration: driver=ahci latency=0
+             resources: irq:31 ioport:f130(size=8) ioport:f120(size=4) ioport:f110(size=8) ioport:f100(size=4) ioport:f020(size=32) memory:e8405000-e84057ff
+        *-serial UNCLAIMED
+             description: SMBus
+             product: 82801JI (ICH10 Family) SMBus Controller
+             vendor: Intel Corporation
+             physical id: 1f.3
+             bus info: pci@0000:00:1f.3
+             version: 00
+             width: 64 bits
+             clock: 33MHz
+             configuration: latency=0
+             resources: memory:e8404000-e84040ff ioport:f000(size=32)
+WARNING: output may be incomplete or inaccurate, you should run this program as super-user.
+188110@cameron:~$ 
+
+

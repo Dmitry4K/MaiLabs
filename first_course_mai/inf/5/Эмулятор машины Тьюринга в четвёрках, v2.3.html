@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)http://mturing2.azurewebsites.net/jstu4/jstu4.html?lang=ru -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Эмулятор машины Тьюринга в четвёрках, v2.3</title>
+        <link rel="stylesheet" href="./Эмулятор машины Тьюринга в четвёрках, v2.3_files/jstu4.css">
+        <script src="./Эмулятор машины Тьюринга в четвёрках, v2.3_files/jquery-1.6.4.js"></script>
+        <script src="./Эмулятор машины Тьюринга в четвёрках, v2.3_files/jquery-plugins.js"></script>
+        <script src="./Эмулятор машины Тьюринга в четвёрках, v2.3_files/hotmilk.browser.jquery.js"></script>
+        <script src="./Эмулятор машины Тьюринга в четвёрках, v2.3_files/i18n.js"></script>
+        <script src="./Эмулятор машины Тьюринга в четвёрках, v2.3_files/tu4.js"></script>
+        <script src="./Эмулятор машины Тьюринга в четвёрках, v2.3_files/ui.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <h1><span class="title">Эмулятор машины Тьюринга в четвёрках, v2.3</span> <a class="button" id="btn-help" href="http://mturing2.azurewebsites.net/jstu4/help-ru.html" title="Справка">?</a></h1>
+            <input class="wide-block mode-edit mode-error tape placeholder-active" id="input-tape" tabindex="1">
+            <div class="wide-block mode-run tape" id="display-tape" style="display: none;"></div>
+            <div class="controls">
+                <a class="button mode-edit" id="btn-start" href="http://mturing2.azurewebsites.net/jstu4/jstu4.html?lang=ru#" title="Запустить программу на выполнение">Старт</a>
+                <a class="button mode-edit" id="btn-totu4" href="http://mturing2.azurewebsites.net/jstu4/jstu4.html?lang=ru#" title="Преобразовать программу в формат TU4">В формат TU4</a>
+                <a class="button mode-run" id="btn-step" href="http://mturing2.azurewebsites.net/jstu4/jstu4.html?lang=ru#" title="Выполнить слещующий шаг программы" style="display: none;">Шаг</a>
+                <a class="button mode-run" id="btn-quick" href="http://mturing2.azurewebsites.net/jstu4/jstu4.html?lang=ru#" title="Перейти в режим быстрого выполнения" style="display: none;">Быстро</a>
+                <a class="button mode-run mode-error" id="btn-edit" href="http://mturing2.azurewebsites.net/jstu4/jstu4.html?lang=ru#" title="Вернуться в режим редактирования программы" style="display: none;">Вернуться к правке</a>
+                <a class="button mode-run" id="btn-unmark" href="http://mturing2.azurewebsites.net/jstu4/jstu4.html?lang=ru#" title="Сбросить метки с использованных команд" style="display: none;">Сбросить метки</a>
+                <span id="log"></span>
+            </div>
+            <div id="stats">&nbsp;</div>
+            <textarea class="wide-block mode-edit program placeholder-active" id="input-program" tabindex="2" style="height: 826.333px;"></textarea>
+            <div class="wide-block mode-run mode-error program" id="display-program" style="display: none; height: 961.333px;"></div>
+        </div>
+    
+
+</body></html>
