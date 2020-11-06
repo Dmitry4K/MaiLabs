@@ -1,1 +1,1 @@
-А тут лаб нет. [Кликай сюда](MyQTprojects/1.ComputerGraphicLabs/)))
+А тут лаб нет. [Кликай сюда](Dmitry4K/MyQTprojects/1.ComputerGraphicLabs/)))
