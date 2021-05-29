@@ -1,0 +1,6 @@
+First Rectangle:
+	First Coordinate: X: 2 Y: 2
+	Square: 2 Perimetr : 6
+Second Rectangle:
+	Second Coordinate: X: 1 Y: 2
+	Square: 4 Perimetr : 8

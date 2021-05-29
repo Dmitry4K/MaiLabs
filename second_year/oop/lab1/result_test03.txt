@@ -1,0 +1,17 @@
+First Rectangle:
+	First Coordinate: X: 1 Y: 1
+	Second Coordinate: X: 1 Y: 1
+	Square: 0 Perimetr : 0
+Second Rectangle:
+	First Coordinate: X: 1 Y: 1
+	Second Coordinate: X: 1 Y: 1
+	Square: 0 Perimetr : 0
+Compare on Square: 1 Compare on Perimetr: 1
+Intersection : 
+	First Coordinate: X: 1 Y: 1
+	Second Coordinate: X: 1 Y: 1
+	Square: 0 Perimetr : 0
+Composition : 
+	First Coordinate: X: 1 Y: 1
+	Second Coordinate: X: 1 Y: 1
+	Square: 0 Perimetr : 0
