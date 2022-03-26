@@ -6,50 +6,79 @@
 #include <thrust/extrema.h>
 #include <thrust/device_ptr.h>
 #include <stack>
+#include <fstream>
 #include <iostream>
+#include<chrono>
 
-#define FLT_MAX 3.402823466e+38F
-#define FLT_MIN 1.175494351e-38F
+#define MAX 1.175494351e+38F
+#define MIN -MAX
 
-#define REDUCE_BLOCKS 256
-#define REDUCE_TRHREADS_COUNT 256
-#define BITONIC_SORT_BLOCKS_COUNT 512
-#define BITONIC_SORT_THREADS_COUNT 512
-#define RESET_BLOCKS_COUNT 32
-#define RESET_THREADS_COUNT 32
-#define COPY_BLOCKS_COUNT 64
-#define THREADS_COPY_COUNT 32
-#define COUNTING_SORT_BLOCKS 64
-#define COUNTING_SORT_THREADS 32
+#define REDUCE_BLOCKS 64
+#define REDUCE_TRHREADS_COUNT 64
+#define COPY_BLOCKS_COUNT 128
+#define THREADS_COPY_COUNT 64
+#define COUNTING_SORT_BLOCKS 128
+#define COUNTING_SORT_THREADS 64
+#define BITONIC_SORT_BLOCKS_COUNT 128
+#define BITONIC_SORT_THREADS_COUNT 128
+#define RESET_BLOCKS_COUNT 128
+#define RESET_THREADS_COUNT 128
+
 #define POCKET_SIZE 1024
 
 
-struct block_view {
-    int start, end;
-    __host__ __device__ int length() {
-        return end - start + 1;
+
+namespace chrono_timer {
+    template<class T = std::chrono::nanoseconds>
+    class timer {
+        std::chrono::steady_clock::time_point start_point = std::chrono::high_resolution_clock::now();
+        std::chrono::steady_clock::time_point end_point = start_point;
+        bool is_stoped = true;
+    public:
+        using time_type = T;
+        void start() {
+            start_point = std::chrono::high_resolution_clock::now();
+            is_stoped = false;
+        }
+        void stop() {
+            end_point = std::chrono::high_resolution_clock::now();
+            is_stoped = true;
+        }
+        long long time() {
+            return is_stoped ? std::chrono::duration_cast<time_type>(end_point - start_point).count() : std::chrono::duration_cast<time_type>(std::chrono::high_resolution_clock::now() - start_point).count();
+        }
+        long long measure(void f(void)) {
+            this->start();
+            f();
+            return this->time();
+        }
+    };
+    long long nanoseconds_time(void f(void)) {
+        timer<> timer;
+        timer.start();
+        f();
+        return timer.time();
     }
+
+    template<class T>
+    long long measure_time(void f(void)) {
+        timer<T> timer;
+        timer.start();
+        f();
+        return timer.time();
+    }
+
+    using timer_nns = timer <>;
+    using timer_mls = timer < std::chrono::milliseconds >;
+    using timer_mcs = timer < std::chrono::microseconds >;
+    using timer_sec = timer < std::chrono::seconds >;
+    using timer_min = timer < std::chrono::minutes >;
 };
 
-__device__ void load_block_from_shared_to_global(
-    volatile float* shared, volatile float* global, int tid, block_view view
-) {
-    if (tid < view.length()) global[view.start + tid] = shared[tid];
-    if (tid + blockDim.x < view.length()) global[view.start + tid + blockDim.x] = shared[tid + blockDim.x];
-    __syncthreads();
-}
 
-__device__ void load_block_from_global_to_shared(
-    volatile float* shared, volatile float* global, int tid, block_view view
-) {
-    shared[tid] = (tid < view.length() ? global[view.start + tid] : FLT_MAX);
-    shared[tid + blockDim.x] = (tid + blockDim.x < view.length() ? global[view.start + tid + blockDim.x] : FLT_MAX);
-    __syncthreads();
-}
-
-__device__ void bytonic_sort_for_shared(volatile float* shared) { 
-    for (int bitonic_length = 2; bitonic_length <= 2 * blockDim.x; bitonic_length *= 2) { 
-        for (int block_size = bitonic_length; block_size >= 2; block_size /= 2) { 
+__device__ void bytonic_sort_for_shared(volatile float* shared) {
+    for (int bitonic_length = 2; bitonic_length <= 2 * blockDim.x; bitonic_length *= 2) {
+        for (int block_size = bitonic_length; block_size >= 2; block_size /= 2) {
 
             int filter_offset = block_size / 2;
             int block_offset = threadIdx.x / filter_offset * block_size;
@@ -73,31 +102,12 @@ __device__ void bytonic_sort_for_shared(volatile float* shared) {
     }
 }
 
-__global__ void bitonic_sort_global(float* global, block_view* blocks, int blocks_size) {
-    extern __shared__ float shared[];
-    for (int block_id = blockIdx.x; block_id < blocks_size; block_id += gridDim.x) {
-        load_block_from_global_to_shared(shared, global, threadIdx.x, blocks[block_id]);
-        bytonic_sort_for_shared(shared);
-        load_block_from_shared_to_global(shared, global, threadIdx.x, blocks[block_id]);
-    }
-}
-
-__device__ void reduce_for_mins_small(volatile float* mins) {
-    for (int offset = 32; offset >= 1; offset /= 2)
-        mins[threadIdx.x] = fmin(mins[threadIdx.x], mins[threadIdx.x + offset]);
-}
-
-__device__ void reduce_for_maxs_small(volatile float* maxs) {
-    for (int offset = 32; offset >= 1; offset /= 2) 
-        maxs[threadIdx.x] = fmax(maxs[threadIdx.x], maxs[threadIdx.x + offset]);
-}
-
-__device__ void reduce_for_mins_big(volatile float* shared_mins, volatile float* g_mem, int n) { 
-    int idx = 2 * blockIdx.x * blockDim.x + threadIdx.x; 
-    int offset = 2 * blockDim.x * gridDim.x; 
-    shared_mins[threadIdx.x] = FLT_MAX; 
-    for (; (idx + blockDim.x) < n; idx += offset) { 
-        shared_mins[threadIdx.x] = fmin(fmin(shared_mins[threadIdx.x], g_mem[idx]), g_mem[idx + blockDim.x]); 
+__device__ void reduce_for_mins_big(volatile float* shared_mins, volatile float* g_mem, int n) {
+    int idx = 2 * blockIdx.x * blockDim.x + threadIdx.x;
+    int offset = 2 * blockDim.x * gridDim.x;
+    shared_mins[threadIdx.x] = MAX;
+    for (; (idx + blockDim.x) < n; idx += offset) {
+        shared_mins[threadIdx.x] = fmin(fmin(shared_mins[threadIdx.x], g_mem[idx]), g_mem[idx + blockDim.x]);
     }
 
     if (idx < n) {
@@ -111,7 +121,7 @@ __device__ void reduce_for_maxs_big(
 ) {
     int idx = 2 * blockIdx.x * blockDim.x + threadIdx.x;
     int offset = 2 * blockDim.x * gridDim.x;
-    shared_maxs[threadIdx.x] = FLT_MIN;
+    shared_maxs[threadIdx.x] = MIN;
     for (; (idx + blockDim.x) < n; idx += offset) {
         shared_maxs[threadIdx.x] = fmax(fmax(shared_maxs[threadIdx.x], g_mem[idx]), g_mem[idx + blockDim.x]);
     }
@@ -121,7 +131,17 @@ __device__ void reduce_for_maxs_big(
     __syncthreads();
 }
 
-__global__ void block_reduce_mins_kernel(float* g_mem, float* block_mins, int n) {
+__device__ void reduce_for_mins_small(volatile float* mins) {
+    for (int offset = 32; offset >= 1; offset /= 2)
+        mins[threadIdx.x] = fmin(mins[threadIdx.x], mins[threadIdx.x + offset]);
+}
+
+__device__ void reduce_for_maxs_small(volatile float* maxs) {
+    for (int offset = 32; offset >= 1; offset /= 2)
+        maxs[threadIdx.x] = fmax(maxs[threadIdx.x], maxs[threadIdx.x + offset]);
+}
+
+__global__ void block_reduce_mins_kernel(float* g_mem, int n, float* block_mins) {
     extern __shared__ float s_memory[];
     reduce_for_mins_big(s_memory, g_mem, n);
 
@@ -135,7 +155,7 @@ __global__ void block_reduce_mins_kernel(float* g_mem, float* block_mins, int n)
     if (threadIdx.x == 0) block_mins[blockIdx.x] = s_memory[0];
 }
 
-__global__ void block_reduce_maxs_kernel(float* g_mem, float* block_maxs, int n) {
+__global__ void block_reduce_maxs_kernel(float* g_mem, int n, float* block_maxs) {
     extern __shared__ float s_memory[];
     reduce_for_maxs_big(s_memory, g_mem, n);
 
@@ -148,6 +168,48 @@ __global__ void block_reduce_maxs_kernel(float* g_mem, float* block_maxs, int n)
     if (threadIdx.x == 0) block_maxs[blockIdx.x] = s_memory[0];
 }
 
+float find_min(float* arr, int n) {
+    float min = arr[0];
+    for (int i = 1; i < n; ++i) min = std::min(min, arr[i]);
+    return min;
+}
+
+float find_max(float* arr, int n) {
+    float max = arr[0];
+    for (int i = 1; i < n; ++i) max = std::max(max, arr[i]);
+    return max;
+}
+struct block_view {
+    int start, end;
+    __host__ __device__ int length() {
+        return end - start + 1;
+    }
+};
+
+__device__ void load_block_from_shared_to_global(
+    volatile float* shared, volatile float* global, int tid, block_view view
+) {
+    if (tid < view.length()) global[view.start + tid] = shared[tid];
+    if (tid + blockDim.x < view.length()) global[view.start + tid + blockDim.x] = shared[tid + blockDim.x];
+    __syncthreads();
+}
+
+__device__ void load_block_from_global_to_shared(
+    volatile float* shared, volatile float* global, int tid, block_view view
+) {
+    shared[tid] = (tid < view.length() ? global[view.start + tid] : MAX);
+    shared[tid + blockDim.x] = (tid + blockDim.x < view.length() ? global[view.start + tid + blockDim.x] : MAX);
+    __syncthreads();
+}
+
+__global__ void bitonic_sort_global(float* global, block_view* blocks, int blocks_size) {
+    extern __shared__ float shared[];
+    for (int block_id = blockIdx.x; block_id < blocks_size; block_id += gridDim.x) {
+        load_block_from_global_to_shared(shared, global, threadIdx.x, blocks[block_id]);
+        bytonic_sort_for_shared(shared);
+        load_block_from_shared_to_global(shared, global, threadIdx.x, blocks[block_id]);
+    }
+}
 
 __global__ void hist_kernel(
     float* src, float* dst, int n,
@@ -155,17 +217,24 @@ __global__ void hist_kernel(
     float minimum, float maximum) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int offset = blockDim.x * gridDim.x;
-    for (int i = idx;  i < n; i += offset) {
-        int mult_coef = ((src[i] - minimum) / (maximum - minimum));
+    for (int i = idx; i < n; i += offset) {
+        float mult_coef = ((src[i] - minimum) / (maximum - minimum));
         int pocket = hist_size - 1;
-        if (mult_coef > 1) {
-            pocket *= mult_coef;
+        if (mult_coef < 1) {
+            pocket = (float)(pocket)*mult_coef;
         }
-        atomicAdd(hist + pocket, 1u);
+        atomicAdd(hist + pocket, 1);
         dst[i] = src[i];
     }
 }
 
+int get_pocket_count(int size) {
+    return ((size + POCKET_SIZE - 1) / POCKET_SIZE) * 2;
+}
+
+void print(int* a, int n) {
+    //for (int i = 0; i < n; ++i) { std::cerr << a[i] << ' '; std::cerr << std::endl; }
+}
 
 __global__ void counting_sort(
     float* src, float* dst, int n,
@@ -176,33 +245,18 @@ __global__ void counting_sort(
     int offset = gridDim.x * blockDim.x;
     for (int i = tid; i < n; i += offset) {
         int pocket = scan_size - 1;
-        int mult_coef = (src[i] - minimum) / (maximum-minimum);
-        if (mult_coef > 1) pocket *= mult_coef;
+        float mult_coef = (src[i] - minimum) / (maximum - minimum);
+        if (mult_coef < 1) pocket = float(pocket) * mult_coef;
         dst[atomicAdd(scan + pocket, 1)] = src[i];
     }
 }
 
-
 __global__ void set_nulls(int* arr, int size) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int offset = gridDim.x * blockDim.x;
-    for (int i = idx; i < size; i += offset) arr[i] = 0; 
+    for (int i = idx; i < size; i += offset) arr[i] = 0;
 }
 
-
-float find_min(float* arr, int n) { 
-    float min = arr[0]; 
-    for (int i = 1; i < n; ++i) min = std::min(min, arr[i]); 
-    return min; 
-}
-
-float find_max(float* arr, int n) {
-    float max = arr[0];
-    for (int i = 1; i < n; ++i) max = std::max(max, arr[i]);
-    return max;
-}
-
-const int partition_effort = 2;
 #define IOSTREAM
 
 int main() {
@@ -212,22 +266,30 @@ int main() {
     fread(&arr_size, sizeof(int), 1, stdin);
 #else
     std::cin >> arr_size;
+    //std::cin >> arr_size;
 #endif
 
     float* arr = (float*)malloc(arr_size * sizeof(float));
 
 #ifndef IOSTREAM
     fread(arr, sizeof(float), arr_size, stdin);
-    for (int i = 0; i < arr_size; ++i) std::cerr << arr[i] << ' ';
+    //for (int i = 0; i < arr_size; ++i) std::cerr << arr[i] << ' ';
 #else
-    for (int i = 0; i < arr_size; ++i) arr[i] = float(arr_size - i) + 0.5;
+    //*
+    for (int i = 0; i < arr_size ; ++i) {
+        arr[i] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    }
+   // */
 #endif
-    const int pockets_max_count = ((arr_size + POCKET_SIZE - 1) / POCKET_SIZE) * partition_effort;
+    //std::cerr << arr_size << std::endl;
+    chrono_timer::timer_mls timer;
+    timer.start();
+    const int pockets_max_count = get_pocket_count(arr_size);
 
     float* mins = (float*)malloc(REDUCE_BLOCKS * sizeof(float));
     float* maxs = (float*)malloc(REDUCE_BLOCKS * sizeof(float));
-    int*   hist = (int*)  malloc(pockets_max_count * sizeof(int));
-    int*   scan = (int*)  malloc(pockets_max_count * sizeof(int));
+    int* hist = (int*)malloc(pockets_max_count * sizeof(int));
+    int* scan = (int*)malloc(pockets_max_count * sizeof(int));
 
     float* dev_mins = nullptr;
     float* dev_maxs = nullptr;
@@ -236,57 +298,58 @@ int main() {
     int* dev_hist_for_trust = nullptr;
     int* dev_scan = nullptr;
 
-    fprintf(stderr, "%d\n", arr_size);
+    //fprintf(stderr, "%d\n", arr_size);
     cudaMalloc(&dev_mins, REDUCE_BLOCKS * sizeof(float));
     cudaMalloc(&dev_maxs, REDUCE_BLOCKS * sizeof(float));
     cudaMalloc(&dev_array, arr_size * sizeof(float));
     cudaMalloc(&dev_counting_sort_buffer, arr_size * sizeof(float));
     cudaMalloc(&dev_hist_for_trust, pockets_max_count * sizeof(int));
     cudaMalloc(&dev_scan, pockets_max_count * sizeof(int));
-    
+
     thrust::device_ptr<int> dev_trust_hist = thrust::device_pointer_cast(dev_hist_for_trust);
     thrust::device_ptr<int> thrust_scan = thrust::device_pointer_cast(dev_scan);
 
     cudaMemcpy(dev_array, arr, arr_size * sizeof(float), cudaMemcpyHostToDevice);
 
-    std::stack<block_view> pool;
+    std::stack<block_view> stack;
     std::vector<block_view> pockets;
 
     if (arr_size > 0) {
-        pool.push({ 0, arr_size-1 });
+        stack.push({ 0, arr_size - 1 });
     }
 
-    while (!pool.empty()) {
-        block_view view = pool.top();
-        pool.pop();
+    while (!stack.empty()) {
+        block_view view = stack.top();
+        stack.pop();
         if (view.length() <= POCKET_SIZE) {
             pockets.push_back(view);
             continue;
         }
-        block_reduce_mins_kernel << <REDUCE_BLOCKS, REDUCE_TRHREADS_COUNT,
-            2 * REDUCE_TRHREADS_COUNT * sizeof(float) >> > (dev_array + view.start, dev_mins, view.length());
-        block_reduce_maxs_kernel << <REDUCE_BLOCKS, REDUCE_TRHREADS_COUNT,
-            2 * REDUCE_TRHREADS_COUNT * sizeof(float) >> > (dev_array + view.start, dev_maxs, view.length());
-        cudaMemcpy(mins, dev_mins, REDUCE_BLOCKS
-            * sizeof(float), cudaMemcpyDeviceToHost);
-        cudaMemcpy(maxs, dev_maxs, REDUCE_BLOCKS
-            * sizeof(float), cudaMemcpyDeviceToHost);
+        block_reduce_mins_kernel << <REDUCE_BLOCKS, REDUCE_TRHREADS_COUNT, 2 * REDUCE_TRHREADS_COUNT * sizeof(float) >> > (dev_array + view.start, view.length(), dev_mins);
+        block_reduce_maxs_kernel << <REDUCE_BLOCKS, REDUCE_TRHREADS_COUNT, 2 * REDUCE_TRHREADS_COUNT * sizeof(float) >> > (dev_array + view.start, view.length(), dev_maxs);
+        cudaMemcpy(mins, dev_mins, REDUCE_BLOCKS * sizeof(float), cudaMemcpyDeviceToHost);
+        cudaMemcpy(maxs, dev_maxs, REDUCE_BLOCKS * sizeof(float), cudaMemcpyDeviceToHost);
+
         float min = find_min(mins, REDUCE_BLOCKS);
         float max = find_max(maxs, REDUCE_BLOCKS);
 
         if (min != max) {
-            int pockets_count = ((view.length() + POCKET_SIZE - 1) / POCKET_SIZE) * partition_effort;
+            //std::cerr << "min: " << min << ' ' << " max: " << max << std::endl;
+            int pockets_count = get_pocket_count(view.length());
             set_nulls << <RESET_BLOCKS_COUNT, RESET_THREADS_COUNT >> > (dev_hist_for_trust, pockets_count);
             cudaDeviceSynchronize();
 
-            hist_kernel << <COPY_BLOCKS_COUNT, THREADS_COPY_COUNT >> > (dev_array + view.start,
-                dev_counting_sort_buffer, view.length(), dev_hist_for_trust, pockets_count, min, max);
+            hist_kernel << <COPY_BLOCKS_COUNT, THREADS_COPY_COUNT >> > (
+                dev_array + view.start, dev_counting_sort_buffer,
+                view.length(), dev_hist_for_trust, pockets_count, min, max
+                );
             cudaDeviceSynchronize();
 
             thrust::exclusive_scan(dev_trust_hist, dev_trust_hist + pockets_count, thrust_scan);
             cudaMemcpy(hist, dev_hist_for_trust, pockets_count * sizeof(int), cudaMemcpyDeviceToHost);
             cudaMemcpy(scan, dev_scan, pockets_count * sizeof(int), cudaMemcpyDeviceToHost);
-
+            //print(hist, pockets_count);
+            //print(scan, pockets_count);
             counting_sort << <COUNTING_SORT_BLOCKS, COUNTING_SORT_THREADS >> > (
                 dev_counting_sort_buffer, dev_array + view.start, view.length(),
                 dev_scan, pockets_count, min, max);
@@ -295,7 +358,8 @@ int main() {
             for (int i = 0; i < pockets_count; ++i) {
                 if (hist[i] != 0) {
                     //fprintf(stderr, "%d %d\n", (int)view.start + scan[i], (int)view.start + scan[i] + hist[i] - 1);
-                    pool.push({ view.start + scan[i], view.start + scan[i] + hist[i] - 1 });
+                    stack.push({ view.start + scan[i], view.start + scan[i] + hist[i] - 1 });
+                    //std::cerr << view.start + scan[i] << ' ' << view.start + scan[i] + hist[i] - 1 << '\n';
                 }
             }
         }
@@ -313,9 +377,14 @@ int main() {
     free(hist);
 
     block_view* dev_pockets = nullptr;
-    cudaMalloc(&dev_pockets, pockets.size() *  sizeof(block_view));
+    cudaMalloc(&dev_pockets, pockets.size() * sizeof(block_view));
     cudaMemcpy(dev_pockets, pockets.data(), pockets.size() * sizeof(block_view), cudaMemcpyHostToDevice);
 
+    //cudaMemcpy(arr, dev_array, arr_size * sizeof(float),cudaMemcpyDeviceToHost);
+    //std::cerr << std::endl;
+    //for (int i = 0; i < arr_size; ++i) std::cout << arr[i] << ' ';
+    //std::cerr << std::endl;
+    //fprintf(stderr, "BIG SORT");
     bitonic_sort_global << <BITONIC_SORT_BLOCKS_COUNT, BITONIC_SORT_THREADS_COUNT,
         2 * BITONIC_SORT_THREADS_COUNT * sizeof(float) >> > (
             dev_array, dev_pockets, pockets.size());
@@ -326,7 +395,8 @@ int main() {
 #ifndef IOSTREAM
     fwrite((char*)(arr), sizeof(float), arr_size, stdout);
 #else
-    for (int i = 0; i < arr_size; ++i) std::cout << arr[i] << ' ';
+    std::cout << timer.time();
+    //for (int i = 0; i < arr_size; ++i) std::cout << arr[i] << ' ';
 #endif
     free(arr);
     return 0;
