@@ -29,40 +29,38 @@ find_winnig <- function(matrixA, n, m){
   print(matrixA)
   print("")
   
-  b = matrix(1, 1, m)
-  
-  c = matrix(1, 1, n)
-  
-  min_max = max(matrixA[,1])
-  min_j = 1
-  for (j in 2:n){
-    if (max(matrixA[,j]) < min_max){
-      min_j = j
-      min_max = max(matrixA[,j])
-    }
-  }
-  
+  # max i min j for the first
   max_min = min(matrixA[1,])
   max_i = 1
   for (i in 2:m){
-    if (max_min < min(matrixA[i,])){
+    if (min(matrixA[i,]) > max_min){
       max_i = i
       max_min = min(matrixA[i,])
+    }
+  }
+  # min j max i for the second
+  min_max = max(matrixA[,1])
+  min_j = 1
+  print(m)
+  for (j in 2:n){
+    if (min_max > max(matrixA[,j])){
+      min_j = j
+      max_min = max(matrixA[,j])
     }
   }
   
   
   print(paste("Winning for first = ", min_max))
-  print(paste("Winning for second = ", -max_min))
+  print(paste("Winning for second = ", max_min))
   print(paste("Strategy for first = ", max_i))
   print(paste("Strategy for second = ",min_j))
   print(paste("Clear strategy (exists - true, else - false) = ", min_max == max_min))
   
   model=list()
   model$A = t(matrixA) - min(matrixA) + 1
-  model$obj = b
+  model$obj = matrix(1, 1, m)
   model$modelsense = 'min'
-  model$rhs = c
+  model$rhs = matrix(1, 1, n)
   model$sense = matrix('>=', 1, n)
   model$vtype = 'C'
   
@@ -79,9 +77,10 @@ find_winnig <- function(matrixA, n, m){
   print('')
   print('')
 }
-
 find_winnig(A, n, m)
 find_winnig(-A, n, m)
 find_winnig(t(A)%*%A, n, n)
 
 rm(list=ls())
+
+
