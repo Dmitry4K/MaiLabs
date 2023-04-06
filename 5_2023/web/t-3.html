@@ -1,0 +1,183 @@
+<!-- 
+    Третья лабораторная работа
+    Студент: Коростелев Дмитрий Васильевич
+    Группа: М8О-106М-22
+    Номер по списку: 5
+    Условие задания:
+        Реализовать простой справочник на LocalStorage
+        Справочник должен
+        1) отображаться в виде нумерованного списка 
+        2) содержать 5 полей
+        3) обавление элемента справочника по кнопке
+        4) позволять удалять отдельные элементы по номеру позиции
+-->
+<!DOCTYPE html>
+<head>
+    <h1>Третья лабораторная работа</h1>
+    <hr>
+    <h3>Студент: Студент: Коростелев Дмитрий Васильевич</h3>
+    <h3>Группа: М8О-106М-22</h3>
+    <h3>Условие</h3>
+    Реализовать простой справочник на LocalStorage <br>
+    Справочник должен<br>
+    <ol>
+        <li>отображаться в виде нумерованного списка</li>
+        <li>содержать 5 полей</li>
+        <li>обавление элемента справочника по кнопке</li>
+        <li>позволять удалять отдельные элементы по номеру позиции</li>
+    </ol>
+</head>
+<hr>
+<body>
+    <div class="block">
+        <h4>Заполните данные</h4>
+    </div>
+    <form name="form">
+        <div class="vertical bordered block">
+            <div class="block_title">Основные данные</div>
+            <input class="small_input" id='fname' placeholder="Имя" type='text' required=True>
+            <input class="small_input" id='sname' placeholder="Фамилия" type='text' required=True>
+            <input class="small_input" id='bdate' placeholder="Дата рождения" type="date" required=True>
+            <select id='sex'>
+                <option disabled selected>Пол</option>
+                <option>Мужской</option>
+                <option>Женский</option>
+            </select>
+            <input class="small_input" id='email'placeholder="Электронная почта" type='email' required=True>
+        </div>
+    </form>
+    <div class="block">
+        <button id="add_button">Добавить</button>
+    </div>
+    <div class="block horizontal">
+        <button id="del_button" disabled="True">Удалить</button>
+        <input class="number_input_delete" id="number_input_delete" type="number" value="" disabled="True" max="0"/>
+    </div>
+    <ol id="list_of_workers"></ol>
+    <hr>
+</body>
+<script>
+    function updateButtonsByListSize(list=[]) {
+        var deleteButton = document.getElementById('del_button')
+        var numberToDeleteInput = document.getElementById('number_input_delete')
+        deleteButton.disabled = list.length == 0
+        numberToDeleteInput.disabled = list.length == 0
+        numberToDeleteInput.max = list.length
+        numberToDeleteInput.min = list.length == 0 ? "0" : "1"
+        numberToDeleteInput.value = list.length
+    }
+
+
+    function loadData() {
+        if (!localStorage.userData) {
+            saveData([])
+        }
+        return JSON.parse(localStorage.userData)
+    }
+
+    function renderTable(data) {
+        let listOfWorkers = document.getElementById('list_of_workers')
+        listOfWorkers.innerHtml = ""
+        var first = listOfWorkers.firstElementChild;
+        while (first) {
+            first.remove();
+            first = listOfWorkers.firstElementChild;
+        }
+        console.log(listOfWorkers.childNodes.length)
+        
+        for (let i = 0; i < data.length; ++i) {
+            let element = data[i]
+            let child = document.createElement('li');
+            child.innerHTML = `${element.fname}, ${element.sname}, ${element.bdate}, ${element.email}, ${element.sex}`;
+            listOfWorkers.appendChild(child);
+        }
+    }
+
+    function saveData(data) {
+        localStorage.userData = JSON.stringify(data)
+        renderTable(data)
+        updateButtonsByListSize(data)
+    }
+
+    function addButton() {
+        var fnameInput = document.getElementById('fname')
+        var snameInput = document.getElementById('sname')
+        var bdateInput = document.getElementById('bdate')
+        var emailInput = document.getElementById('email')
+        var sexSelector = document.getElementById('sex')
+
+        var data = loadData()
+        var fname = fnameInput.value
+        var sname = snameInput.value
+        var bdate = bdateInput.value
+        var email = emailInput.value
+        var sex = sexSelector.options[sexSelector.selectedIndex].value
+        data.push({
+            fname,
+            sname,
+            bdate,
+            email,
+            sex,
+        })
+        saveData(data)
+    }
+
+    function delButton() {
+        var numberToDeleteInput = document.getElementById('number_input_delete')
+        var data = loadData()
+        var index = numberToDeleteInput.value - 1
+        data.splice(index, 1)
+        saveData(data)
+    }
+
+    saveData(loadData())
+    document.getElementById("add_button").addEventListener("click",addButton)
+    document.getElementById("del_button").addEventListener("click",delButton)
+</script>
+<style>
+    .small_input, textarea, select, option {
+        margin: 5px;
+        padding: 5px;
+    }
+    textarea {
+        width: auto;
+        flex-grow: 1;
+    }
+    body {
+        align-content: center;
+    }
+    .bordered {
+        border-radius: 30px;
+        border:2px solid black;
+    }
+    .block {  
+        margin: 0 auto;
+        padding: 10px;
+        padding-left: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+    .block_title {
+        text-align: left;
+        margin-left: 6px;
+    }
+    .vertical {
+        width: 300px;
+    }
+    .horizontal {
+        width: 300px;
+        display: flex;
+        flex-direction: row;
+    }
+    button {
+        margin: 0 auto;
+        width: 300px;
+        height: 60px;
+    }
+    .number_input_delete {
+        width: 50px;
+    }
+    h4 {
+        margin: 0 auto;
+    }
+</style>

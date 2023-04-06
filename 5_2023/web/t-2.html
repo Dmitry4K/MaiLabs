@@ -1,0 +1,127 @@
+<!-- 
+    Вторая лабораторная работа
+    Студент: Коростелев Дмитрий Васильевич
+    Группа: М8О-106М-22
+    Номер по списку: 5
+    Условие задания:
+         Обработка событий на элементах HTML-страницы
+        Сформировать текст по шаблону, в который вставляются элементы, требующие проверки:
+        год, дата, время, фамилия, почта, число (в диапазоне)
+        Использовать различные типы <input>, таблицу, радиокнопки и т.п.
+        Минимальный CSS
+
+-->
+<!DOCTYPE html>
+<head>
+    <h1>Вторая лабораторная работа</h1>
+    <hr>
+    <h3>Студент: Студент: Коростелев Дмитрий Васильевич</h3>
+    <h3>Группа: М8О-106М-22</h3>
+    <h3>Условие</h3>
+        Сформировать текст по шаблону, в который вставляются элементы, требующие проверки:<br>
+        год, дата, время, фамилия, почта, число (в диапазоне)<br>
+        Использовать различные типы &lt;input&gt;, таблицу, радиокнопки и т.п.<br>
+        Минимальный CSS<br>
+</head>
+<hr>
+<body>
+    <h4>Заполните Резюме</h4>
+    <form name="form">
+        <div class="horizontal"?>
+            <div class="vertical left">
+                <div class="bordered block">
+                    <div class="block_title">Желаемая должность</div>
+                    <input id='post' name='post' placeholder="Название должности" type='text' required=True>
+                </div>
+                <div class="bordered block">
+                    <div class="block_title">Основные данные</div>
+                    <input id='fname' name='fname' placeholder="Имя" type='text' required=True>
+                    <input id='sname' name='sname' placeholder="Фамилия" type='text' required=True>
+                    <input id='bdate' name='bdate' placeholder="Дата рождения" type="date" required=True>
+                    <select id='sex' name="sex">
+                        <option disabled selected>Пол</option>
+                        <option>Мужской</option>
+                        <option>Женский</option>
+                    </select>
+                    <input id='email' name='email' placeholder="Электронная почта" type='email' required=True>
+                    <input id='gyear' name='gyear' placeholder="Год получения образования" type='number' required=True min = 1900 max=2050>
+                </div>
+            </div>
+            <div class="bordered right block">
+                <div class="block_title">O cебе</div>
+                <textarea id='about' name='about' class="about_input" placeholder="Напиши что-нибудь о себе" required=True></textarea>
+            </div>
+        </div>
+        </div>
+    </form>
+    <button id="send_button">Отправить</button>
+    <hr>
+    <div id="resume_placeholder"></div>
+</body>
+<script>
+    function isFormValid() {
+        return  form.checkValidity() && 
+                form.sex.options.selectedIndex != 0
+    }
+    function createResume() {
+        var sexSelector = document.getElementById('sex')
+        var placeholder = document.getElementById("resume_placeholder")
+        placeholder.childNodes.forEach(element => {
+            placeholder.removeChild(element)
+        });
+        var element = document.createElement('div')
+        if(isFormValid()) {
+        element.innerHTML = '<p>Должность: ' + form.post.value + '</p>'+
+            '<p>Имя: ' + form.fname.value + '</p>'+
+            '<p>Фамилия: ' + form.sname.value + '</p>'+
+            '<p>Дата рождения: ' + form.bdate.value + '</p>'+
+            '<p>Пол: ' + form.sex.options[form.sex.options.selectedIndex].value + '</p>'+
+            '<p>Электронная почта: ' + form.email.value + '</p>'+
+            '<p>Год получения образования: ' + form.gyear.value + '</p>'+
+            '<p>О себе: ' + form.about.value + '</p>'
+        } else {
+            element.innerHTML = '<p>Проверьте введенные данные!<p>'
+        }
+        placeholder.appendChild(element)
+    }
+    document.getElementById("send_button").addEventListener("click",createResume)
+</script>
+<style>
+    input, textarea, select, option {
+        margin: 5px;
+        padding: 5px;
+    }
+    .left {
+        width: 300px;
+    }
+    textarea, .right {
+        width: auto;
+        flex-grow: 1;
+    }
+    body {
+        align-content: center;
+    }
+    .bordered {
+        border-radius: 30px;
+        border:2px solid black;
+    }
+    .block {
+        margin: 10px;
+        padding: 10px;
+        padding-left: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+    .horizontal {
+        display: flex;
+        flex-direction: row;
+    }
+    .block_title {
+        text-align: left;
+        margin-left: 6px;
+    }
+    .vertical {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
