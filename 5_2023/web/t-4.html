@@ -4,7 +4,7 @@
     Группа: М8О-106М-22
     Номер по списку: 5
     Условие задания:
-        Разработать 2-3 примера с использованием JQuery, который включал бы функции из разделов
+        Разработать примеры, которые должны содержать минимум 7 (из 10 на выбор) функций на все примеры (по 1 из каждого раздела). Сгруппировать функции по примерам произвольно.
         1: val() +
         2: height(), innerHeight(), outerHeight() +
         3: :image
@@ -25,7 +25,7 @@
     <h3>Студент: Коростелев Дмитрий Васильевич</h3>
     <h3>Группа: М8О-106М-22</h3>
     <h3>Условие</h3>
-    Разработать 2-3 примера с использованием JQuery, который включал бы функции из разделов<br>
+    Разработать примеры, которые должны содержать минимум 7 (из 10 на выбор) функций на все примеры (по 1 из каждого раздела). Сгруппировать функции по примерам произвольно.
     <ol>
         <li>val() +</li>
         <li>height(), innerHeight(), outerHeight() +</li>
@@ -39,9 +39,16 @@
         <li>animate() +</li>
     </ol>
 </head>
-<hr>
 <body>
+    <hr>
+    <div class="circle_area">Кружочек будет следить за тобой</div>
+    <hr>
     <div class="block_wrapper">
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
         <div class="block"><input class='color_picker' type='color'></div>
         <div class="block"><input class='color_picker' type='color'></div>
         <div class="block"><input class='color_picker' type='color'></div>
@@ -76,6 +83,9 @@
         background: red;
         position: absolute;
     }
+    .circle_area {
+        height: 500px;
+    }
 </style>
 <script>
     function addColorPickerEvent() {
@@ -102,11 +112,11 @@
         })
     }
     function addBodyOnClickEvent() {
-        $("body").on('mouseup',function(event) {
-            if ($("body").find("#circle").length == 0) {
-                $("body").append($('<div id="circle"></div>'))
+        $(".circle_area").on('mouseup',function(event) {
+            if ($(".circle_area").find("#circle").length == 0) {
+                $(".circle_area").append($('<div id="circle"></div>'))
             }
-            $("body").find("#circle").animate({
+            $(".circle_area").find("#circle").animate({
                 top: `${event.pageY-$("#circle").height()/2}`,
                 left: `${event.pageX-$("#circle").width()/2}`
             }, 300)
