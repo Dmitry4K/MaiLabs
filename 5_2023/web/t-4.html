@@ -1,0 +1,133 @@
+<!-- 
+    Четвертая лабораторная работа
+    Студент: Коростелев Дмитрий Васильевич
+    Группа: М8О-106М-22
+    Номер по списку: 5
+    Условие задания:
+        Разработать 2-3 примера с использованием JQuery, который включал бы функции из разделов
+        1: val() +
+        2: height(), innerHeight(), outerHeight() +
+        3: :image
+        4: offsetParent() 
+        5: unwrap() +
+        6: prevAll()
+        7: event +
+        8: hover() +
+        9: blur() +
+        10: animate() +
+-->
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+<script src="https://code.jquery.com/color/jquery.color-2.2.0.js"></script>
+<head>
+    <h1>Четвертая лабораторная работа</h1>
+    <hr>
+    <h3>Студент: Коростелев Дмитрий Васильевич</h3>
+    <h3>Группа: М8О-106М-22</h3>
+    <h3>Условие</h3>
+    Разработать 2-3 примера с использованием JQuery, который включал бы функции из разделов<br>
+    <ol>
+        <li>val() +</li>
+        <li>height(), innerHeight(), outerHeight() +</li>
+        <li>:image</li>
+        <li>offsetParent()</li>
+        <li>unwrap() +</li>
+        <li>prevAll()</li>
+        <li>event +</li>
+        <li>hover() +</li>
+        <li>blur() +</li>
+        <li>animate() +</li>
+    </ol>
+</head>
+<hr>
+<body>
+    <div class="block_wrapper">
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+        <div class="block"><input class='color_picker' type='color'></div>
+    </div>
+    <hr>
+</body>
+<style>
+    .block {
+        width: 100px;
+        height: 100px;
+        border: 3px solid black;
+        border-radius: 5px;
+        background-color: cornflowerblue;
+        position: relative;
+        margin: 10px 10px
+    }
+    .block_wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap
+    }
+    #circle {
+        width: 8px;
+        height: 8px;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+        background: red;
+        position: absolute;
+    }
+</style>
+<script>
+    function addColorPickerEvent() {
+        $(".color_picker").change(function() {
+            console.log(`${$(this).val()}`);
+            $(this).parent().animate({backgroundColor: `${$(this).val()}`}, 1500)
+        })
+    }
+    function addBlockHoverEvent() {
+        $(".block").hover(
+            function() {
+                $(this).find(".color_picker").fadeIn(200);
+            }, function() {
+                $(this).find(".color_picker").fadeOut(200);
+            }
+        )
+    }
+    function addColorPickerBlurEvent() {
+        $(".color_picker").blur(function() {
+            console.log("blur called")
+            if ($("body").find("#hint").length == 0) {
+                $("body").append($("<div id='hint'>Чтобы применить цвет, выберите его в окне с палитрой</div>"))
+            }
+        })
+    }
+    function addBodyOnClickEvent() {
+        $("body").on('mouseup',function(event) {
+            if ($("body").find("#circle").length == 0) {
+                $("body").append($('<div id="circle"></div>'))
+            }
+            $("body").find("#circle").animate({
+                top: `${event.pageY-$("#circle").height()/2}`,
+                left: `${event.pageX-$("#circle").width()/2}`
+            }, 300)
+            console.log(`${$("#circle").height()}`)
+        })
+    }
+    function addBodyHoverEvent() {
+        $(".block_wrapper").hover(
+            function() {
+                $(".block_wrapper").wrap("hr")
+            },
+            function() {
+                $(".block_wrapper").unwrap()
+            }
+        )
+    }
+    
+    $(".color_picker").fadeOut(0)
+    addBlockHoverEvent()
+    addColorPickerEvent()
+    addColorPickerBlurEvent()
+    addBodyOnClickEvent()
+    addBodyHoverEvent()
+</script>
