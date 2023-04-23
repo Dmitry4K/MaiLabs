@@ -1,0 +1,119 @@
+<!-- 
+    Пятая лабораторная работа
+    Студент: Коростелев Дмитрий Васильевич
+    Группа: М8О-106М-22
+    Номер по списку: 5
+    Условие задания:
+    В HTML-документе определены 2 формы. 
+    На первой управляющие кнопки и поля ввода, вторая  - пустая.
+    При нажатии на кнопки первой формы на второй форме генерируются элементы (а).
+    Параметры и количество элементов определяются в элементах 1-й формы(б),
+    а также заданы в виде массивов на JavaScript.
+    После построения элементов на второй форме по некоторым кнопкам/элементам
+    можно произвести некоторые действия (в), результаты которых отображаются на 2-форме.
+    Для генерации элементов и вывода результатов использовать свойство innerHTML.
+    Примечание. Уточнения постановки производить самостоятельно. 
+
+        (а) TABLE из одной строки, ссылки 
+        (б)В элементе INPUT выбрать цвет, указав номер ячейки.
+        (в)По кнопке изменить цвет ссылок,выбранных пользователем
+        Значения ссылок заданы в массиве
+
+-->
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+<script src="https://code.jquery.com/color/jquery.color-2.2.0.js"></script>
+<head>
+    <h1>Пятая лабораторная работа</h1>
+    <hr>
+    <h3>Студент: Коростелев Дмитрий Васильевич</h3>
+    <h3>Группа: М8О-106М-22</h3>
+    <h3>Условие</h3>
+    В HTML-документе определены 2 формы. 
+    На первой управляющие кнопки и поля ввода, вторая  - пустая.
+    При нажатии на кнопки первой формы на второй форме генерируются элементы (а).
+    Параметры и количество элементов определяются в элементах 1-й формы(б),
+    а также заданы в виде массивов на JavaScript.
+    После построения элементов на второй форме по некоторым кнопкам/элементам
+    можно произвести некоторые действия (в), результаты которых отображаются на 2-форме.
+    Для генерации элементов и вывода результатов использовать свойство innerHTML.
+    Примечание. Уточнения постановки производить самостоятельно. <br><br>
+
+    (а) TABLE из одной строки, ссылки<br>
+    (б)В элементе INPUT выбрать цвет, указав номер ячейки.<br>
+    (в)По кнопке изменить цвет ссылок,выбранных пользователем<br>
+    Значения ссылок заданы в массиве<br>
+</head>
+<body>
+    <hr>
+    <div class="flex_wrapper horizontal">
+        <div class="vertical">
+            <button id="add_button">Добавить cсылку</button>
+        </div>
+        <div class="vertical">
+            <div class="grid_wrapper">
+                <div>Выберите цвет</div>
+                <input id="color" type="color">
+                <div>Выберите номер ячейки (можно выбрать несколько, удерживая CTRL)</div>
+                <select id="link_selector" type="number" multiple="multiple" ></select>
+            </div>
+            <button id="change_color_button">Изменить цвет ссылки</button>
+        </div>
+    </div>
+    <hr>
+    <div id="content_wrapper"></div>
+    <hr>
+</body>
+<style>
+    * {
+        margin: 2px;
+    }
+    .grid_wrapper {
+        display: grid;
+        grid-template-columns: 200px 200px;
+    }
+    input, select {
+        width: 100%;
+    }
+    .flex_wrapper {
+        display: flex;
+    }
+    .horizontal {
+        flex-direction: row;
+    }
+    .vertical {
+        flex-direction: column;
+    }
+    #add_button {
+        height: 100%;
+    }
+    #change_color_button {
+        width: 100%;
+    }
+    table,
+    td {
+        border: 1px solid #333;
+    }
+
+    thead,
+    tfoot {
+        background-color: #333;
+        color: #fff;
+    }
+</style>
+<script>
+    $("#add_button").click(function() {
+        var childCount = $("#content_wrapper").children().length
+        document.getElementById('content_wrapper').innerHTML += 
+        `<table><tr><td>${childCount+1}</td><td><a id="ref_${childCount+1}" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a></td></tr></table>`
+        document.getElementById('link_selector').innerHTML += `<option>${childCount+1}</option>`
+    })
+    $("#change_color_button").click(function() {
+        $('#link_selector').find(":selected").each(function(i ,element) {
+            var id = `ref_${element.value}`
+            console.log(id)
+            document.getElementById(id).outerHTML =
+            `<a id="${id}" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color:${$("#color").val()}">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a>`
+        });
+    })
+</script>
