@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <script src="https://code.jquery.com/color/jquery.color-2.2.0.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"><head>
+</head>
+<body>
+    <div id="app"></div>
+    <!-- <script src="js/Position.js" type="text/babel"></script> -->
+    <script type="text/babel">
+        
+
+        class ResumePagination extends React.Component {
+            render() {
+                return (
+                    <div>
+                        <nav aria-label="Page navigation">
+                            <ul id='pages' className="pagination"></ul>
+                        </nav>
+                    </div>
+                );
+            }
+        }
+
+        class Form extends React.Component {
+            render() {
+                return (
+                    <div>
+                    <h4>Заполните Резюме</h4>
+                    <form id="form" onSubmit={this.preventSubmit}>
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <div className="border border-dark border-1 rounded-3 m-2 p-2">
+                                    <label className="col-form-label">Желаемая должность</label>
+                                    <input id='post' type="text" className="form-control" placeholder="Сварщик" required='True'></input>
+                                </div>
+                                <div className="border border-dark border-1 rounded-3 m-2 p-2">
+                                    <div className="row mb-2">
+                                        <label className="col-md-3 col-form-label">Имя</label>
+                                        <div className="col-md-9">
+                                            <input type="text" className="form-control" id='fname' placeholder="Петр" required='True'></input>
+                                        </div>
+                                    </div>
+                                    <div className="row mb-2">
+                                        <label className="col-md-3 col-form-label">Фамилия</label>
+                                        <div className="col-md-9">
+                                            <input type="text" className="form-control" id='sname' placeholder="Иванов" required='True'></input>
+                                        </div>
+                                    </div>
+                                    <div className="row mb-2">
+                                        <label className="col-md-3 col-form-label">Дата рождения</label>
+                                        <div className="col-md-9">
+                                            <input type="date" className="form-control" id='bdate' required='True'></input>
+                                        </div>
+                                    </div>
+                                    <div className="row mb-2">
+                                        <label className="col-md-3 col-form-label">Пол</label>
+                                        <div className="col-md-9">
+                                            <select className="custom-select w-100" id='sex'>
+                                                <option>Мужской</option>
+                                                <option>Женский</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="row mb-2">
+                                        <label className="col-md-5 col-form-label">Электронная почта</label>
+                                        <div className="col-md-7">
+                                            <input type="email" className="form-control" id='email' placeholder="example@mail.ru" required='True'></input>
+                                        </div>
+                                    </div>
+                                    <div className="row mb-2">
+                                        <label className="col-md-6 col-form-label">Год получения образования</label>
+                                        <div className="col-md-6">
+                                            <input id='gyear' placeholder="2018" type='number' required='True' min = '1900' max='2023' className="form-control"></input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-sm-8 border border-dark border-1 rounded-3 m-2 p-2">
+                                <label className="col-form-label">О себе</label>
+                                <textarea className="form-control h-75" id='about' placeholder="Напиши что-нибудь о себе" required='True'></textarea>
+                            </div>
+                        </div>
+                        <button id="send_button" type="submit" className="btn btn-primary m-2" onClick={this.createResume}>Отправить</button>
+                    </form>
+                    <ResumePagination />
+                    <div id="resume_placeholder"></div>
+                    </div>
+                );
+            }
+
+            preventSubmit(e) {
+                e.preventDefault();
+            }
+
+            
+            createResume() {
+                if(form.checkValidity()) {
+                    var pages = $("#pages")
+                    var next_page = pages.children().length+1
+                    pages.append(
+                        `<li id="page_${next_page}" class="page-item"><a class="page-link">${next_page}<\/a>` +
+                        `<script>$("#page_${next_page}").click(function() {` + 
+                        `showResume("${form.post.value}",` +
+                        `"${form.fname.value}",` +
+                        `"${form.sname.value}",` +
+                        `"${form.bdate.value}",` +
+                        `"${form.sex.options[form.sex.options.selectedIndex].value}",` +
+                        `"${form.email.value}",` +
+                        `"${form.gyear.value}",` +
+                        `"${form.about.value}")` +
+                        `})<\/script><\/li>`
+                    )
+                    //
+                }
+            }
+        }
+
+        
+        function showResume(post, fname, sname, bdate, sex, email, gyear, about) {
+            var placeholder = document.getElementById("resume_placeholder")
+            placeholder.childNodes.forEach(element => {
+                placeholder.removeChild(element)
+            });
+            var element = document.createElement('div')
+
+            element.innerHTML = '<ul class="list-group">' +
+                '<li class="list-group-item">Должность: ' + post + '</li>'+
+                '<li class="list-group-item">Имя: ' + fname + '</li>'+
+                '<li class="list-group-item">Фамилия: ' + sname + '</li>'+
+                '<li class="list-group-item">Дата рождения: ' + bdate + '</li>'+
+                '<li class="list-group-item">Пол: ' + sex+ '</li>'+
+                '<li class="list-group-item">Электронная почта: ' + email + '</li>'+
+                '<li class="list-group-item">Год получения образования: ' + gyear + '</li>'+
+                '<li class="list-group-item">О себе: ' + about + '</li>' + '</ul>'
+            placeholder.appendChild(element)
+        }
+
+
+        ReactDOM.render(
+            (<Form />),
+            document.getElementById('app')
+        )
+    </script>
+</body>
+</html>
